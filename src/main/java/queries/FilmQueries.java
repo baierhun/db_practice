@@ -1,5 +1,7 @@
 package queries;
 
+import utils.ResultPrinter;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,18 +13,14 @@ public class FilmQueries {
             throws SQLException {
         PreparedStatement sql = null;
         try {
-            sql = conn.prepareStatement("SELECT * FROM film WHERE title LIKE ? COLLATE NOCASE");
+            sql = conn.prepareStatement("SELECT film_id, title, description FROM film WHERE title LIKE ? COLLATE " +
+                    "NOCASE");
             String search = "%%%s%%".formatted(keyword);
             sql.setString(1, search);
             ResultSet rs = null;
             try {
                 rs = sql.executeQuery();
-                while (rs.next()) {
-                    int id = rs.getInt("film_id");
-                    String title = rs.getString("title");
-                    String description = rs.getString("description");
-                    System.out.println("%d: %s | %s".formatted(id, title, description.substring(0, 10) + "..."));
-                }
+                ResultPrinter.print(rs);
             } finally {
                 if (rs != null) rs.close();
             }

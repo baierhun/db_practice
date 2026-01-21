@@ -1,7 +1,23 @@
 import queries.FilmQueries;
 
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.Scanner;
+
+/*
+sakila/
+ ├── Main.java
+ ├── Database.java
+ ├── Menu.java
+ ├── util/
+ │    └── ResultPrinter.java
+ └── queries/
+      ├── FilmQueries.java
+      ├── ActorQueries.java
+      ├── CustomerQueries.java
+      ├── StoreQueries.java
+      └── ReportQueries.java
+
+ */
 
 public class Main {
     public static void main(String[] args) throws SQLException {
