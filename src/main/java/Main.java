@@ -1,31 +1,26 @@
+import queries.FilmQueries;
+
 import java.sql.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
         String url = "jdbc:sqlite:/Users/paulbaier/School/SoftwareEngineering/db/Sakila";
-        Connection conn = null;
-        PreparedStatement sql = null;
+        Database db = new Database(url);
+        db.connect();
+        String input = null;
+        Scanner in = new Scanner(System.in);
         try {
-            conn = DriverManager.getConnection(url);
-            System.out.println("Connected to SQLite!");
-            sql = conn.prepareStatement("SELECT * FROM actor");
-            ResultSet rs = null;
-            try {
-                rs = sql.executeQuery();
-                while (rs.next()) {
-                    int id = rs.getInt("actor_id");
-                    String firstName = rs.getString("first_name");
-                    String lastName = rs.getString("last_name");
-                    System.out.println("%d: %s %s".formatted(id, firstName, lastName));
-                }
-            } finally {
-                if (rs != null) rs.close();
+            while (true) {
+                System.out.print("Search for a movie title> ");
+                input = in.nextLine();
+                if (input.equals("exit")) break;
+                FilmQueries.searchByTitle(db.getConnection(), input);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (sql != null) sql.close();
-            if (conn != null) conn.close();
+            db.close();
         }
     }
 }
